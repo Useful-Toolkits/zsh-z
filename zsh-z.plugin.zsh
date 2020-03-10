@@ -392,7 +392,7 @@ _zshz_output() {
       for x in ${(k)output_matches}; do
         if (( output_matches[$x] )); then
           # Always use period as decimal separator for compatibility with fzf-z
-          LC_ALL=C print -z -f "%-10.2f %s\n" ${output_matches[$x]} $x
+          LC_ALL=C print -z -f "%-10d %s\n" ${output_matches[$x]} $x
           read -rz stack
           output+=( $stack )
         fi
