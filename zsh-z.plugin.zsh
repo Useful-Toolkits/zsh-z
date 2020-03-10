@@ -94,6 +94,9 @@ With no ARGUMENT, list the directory history in ascending rank.
 # Load zsh/system, if necessary
 [[ ${modules[zsh/system]} == 'loaded' ]] || zmodload zsh/system &> /dev/null
 
+# Load zsh/mathfunc, if necessary
+[[ ${modules[zsh/mathfunc]} == 'loaded' ]] || zmodload zsh/mathfunc &> /dev/null
+
 # Load zsh/files, if necessary
 [[ ${builtins[zf_chown]} == 'defined' ]] \
   && [[ ${builtins[zf_mv]} == 'defined' ]] \
@@ -468,7 +471,7 @@ _zshz_find_matches() {
       *)
         # Frecency routine
         (( dx = EPOCHSECONDS - time_field ))
-        rank=$(( rank_field * (3.75/(0.0001 * dx + 1) + 0.25) ))
+        rank=$(( int(10000 * rank_field * (3.75/(0.0001 * dx + 1) + 0.25)) ))
         ;;
     esac
 
