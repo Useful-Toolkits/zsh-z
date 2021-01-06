@@ -764,6 +764,7 @@ ZSHZ[FUNCTIONS]='_zshz_usage
                 _zshz_update_datafile
                 _zshz_legacy_complete
                 _zshz_remove_path
+                _zshz_printv
                 _zshz_find_common_root
                 _zshz_output
                 _zshz_find_matches
