@@ -359,6 +359,8 @@ _zshz_remove_path() {
 #   Options and parameters for `print'
 ############################################################
 _zshz_printv() {
+  ZSHZ[REPLY]=''
+
   if (( ZSHZ[PRINTV] )); then
     builtin print -v 'ZSHZ[REPLY]' $@
   else
@@ -422,7 +424,6 @@ _zshz_output() {
 
   output_matches=( ${(Pkv)match_array} )
 
-  ZSHZ[REPLY]=''
   _zshz_find_common_root $match_array
   common=${ZSHZ[REPLY]}
 
