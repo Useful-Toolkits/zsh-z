@@ -583,6 +583,8 @@ zshz() {
   setopt LOCAL_OPTIONS EXTENDED_GLOB
   (( ZSHZ_DEBUG )) && setopt LOCAL_OPTIONS WARN_CREATE_GLOBAL
 
+  ZSHZ[REPLY]=''
+
   local -A opts
 
   zparseopts -E -D -A opts -- \
