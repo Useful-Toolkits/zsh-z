@@ -422,6 +422,7 @@ _zshz_output() {
 
   output_matches=( ${(Pkv)match_array} )
 
+  ZSHZ[REPLY]=''
   _zshz_find_common_root $match_array
   common=${ZSHZ[REPLY]}
 
