@@ -418,7 +418,7 @@ _zshz_output() {
   setopt LOCAL_OPTIONS EXTENDED_GLOB
 
   local match_array=$1 match=$2 format=$3
-  local common stack k x
+  local common k x
   local -A output_matches
   local -a descending_list output
 
