@@ -340,6 +340,8 @@ _zshz_remove_path() {
 }
 
 ############################################################
+# `print` or `printf` to ZSHZ[REPLY]
+#
 # Variable assignment through command substitution, of the
 # form
 #
@@ -359,8 +361,6 @@ _zshz_remove_path() {
 #   Options and parameters for `print'
 ############################################################
 _zshz_printv() {
-  ZSHZ[REPLY]=''
-
   if (( ZSHZ[PRINTV] )); then
     builtin print -v 'ZSHZ[REPLY]' $@
   else
