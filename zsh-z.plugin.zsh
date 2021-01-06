@@ -348,7 +348,7 @@ _zshz_remove_path() {
 #   foo=$( bar )
 #
 # requires forking a subshell; on Cygwin/MSYS2/WSL1 that can
-# be incredibly slow. ZSH-z avoids doing that by printing
+# be surprisingly slow. ZSH-z avoids doing that by printing
 # values to the global ZSHZ[REPLY]. Since ZSH v5.3.0 that
 # has been possible with `print -v'; for earlier versions of
 # the shell, the values are placed on the editing buffer
