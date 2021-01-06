@@ -434,6 +434,7 @@ _zshz_output() {
       done
       descending_list=( ${${(@On)descending_list}#*\|} )
       print -l $descending_list
+      ZSHZ[REPLY]=''
       ;;
 
     list)
@@ -451,6 +452,7 @@ _zshz_output() {
       for x in ${(@on)output};do
         print "${${x%${x##[[:digit:]]##[[:punct:]][[:digit:]]##[[:blank:]]}}/[[:punct:]]00/   }${x##[[:digit:]]##[[:punct:]][[:digit:]]##[[:blank:]]}"
       done
+      ZSHZ[REPLY]=''
       ;;
 
     *)
