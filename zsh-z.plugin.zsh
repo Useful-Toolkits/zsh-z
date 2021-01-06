@@ -431,10 +431,10 @@ _zshz_output() {
       for k in ${(@k)output_matches}; do
         _zshz_printv -f "%.2f|%s" ${output_matches[$k]} $k
         descending_list+=( ${(f)ZSHZ[REPLY]} )
+        ZSHZ[REPLY]=''
       done
       descending_list=( ${${(@On)descending_list}#*\|} )
       print -l $descending_list
-      ZSHZ[REPLY]=''
       ;;
 
     list)
@@ -443,6 +443,7 @@ _zshz_output() {
           # Always use period as decimal separator for compatibility with fzf-z
           LC_ALL=C _zshz_printv -f "%-10.2f %s\n" ${output_matches[$x]} $x
           output+=( ${(f)ZSHZ[REPLY]} )
+          ZSHZ[REPLY]=''
         fi
       done
       if [[ -n $common ]]; then
@@ -452,7 +453,6 @@ _zshz_output() {
       for x in ${(@on)output};do
         print "${${x%${x##[[:digit:]]##[[:punct:]][[:digit:]]##[[:blank:]]}}/[[:punct:]]00/   }${x##[[:digit:]]##[[:punct:]][[:digit:]]##[[:blank:]]}"
       done
-      ZSHZ[REPLY]=''
       ;;
 
     *)
@@ -584,8 +584,6 @@ zshz() {
   emulate -L zsh
   setopt LOCAL_OPTIONS EXTENDED_GLOB
   (( ZSHZ_DEBUG )) && setopt LOCAL_OPTIONS WARN_CREATE_GLOBAL
-
-  ZSHZ[REPLY]=''
 
   local -A opts
 
