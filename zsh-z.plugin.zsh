@@ -441,20 +441,20 @@ zshz() {
     case $format in
 
       completion)
-        for k in ${(k)${(P)match_array}[@]}; do
-          _zshz_printv -f "%.2f|%s" ${${(P)match_array}[$k]} $k
-          descending_list+=( ${(f)REPLY} )
+        for k in "${(k)${(P)match_array}[@]}"; do
+          _zshz_printv -f "%.2f|%s" ${${(P)match_array}[$k]} "$k"
+          descending_list+=( ${(f)"${REPLY}"} )
           REPLY=''
         done
-        descending_list=( ${${(On)descending_list[@]}#*\|} )
-        print -l ${descending_list[@]}
+        descending_list=( "${${(On)descending_list[@]}#*\|}" )
+        print -l "${descending_list[@]}"
         ;;
 
       list)
-        for x in ${(k)${(P)match_array}[@]}; do
+        for x in "${(k)${(P)match_array}[@]}"; do
           if (( ${${(P)match_array}[$x]} )); then
-            _zshz_printv -f "%-10d %s\n" ${${(P)match_array}[$x]} $x
-            output+=( ${(f)REPLY} )
+            _zshz_printv -f "%-10d %s\n" ${${(P)match_array}[$x]} "$x"
+            output+=( ${(f)"${REPLY}"} )
             REPLY=''
           fi
         done
