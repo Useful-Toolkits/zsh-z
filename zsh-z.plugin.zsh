@@ -392,10 +392,11 @@ zshz() {
   #   $1 Name of associative array of matches and ranks
   ############################################################
   _zshz_find_common_root() {
+
     local -a common_matches
     local x short
 
-    common_matches=( ${(Pk)1[@]} )
+    common_matches=( ${(k)${(P)1}[@]} )
 
     for x in ${common_matches[@]}; do
       if [[ -z $short ]] || (( $#x < $#short )); then
@@ -441,17 +442,17 @@ zshz() {
     case $format in
 
       completion)
-        for k in ${(Pk)match_array[@]}; do
+        for k in ${(k)${(P)match_array}[@]}; do
           _zshz_printv -f "%.2f|%s" ${${(P)match_array}[$k]} $k
           descending_list+=( ${(f)REPLY} )
           REPLY=''
         done
-        descending_list=( ${${(@On)descending_list}#*\|} )
-        print -l $descending_list
+        descending_list=( ${${(On)descending_list[@]}#*\|} )
+        print -l ${descending_list[@]}
         ;;
 
       list)
-        for x in ${(Pk)match_array[@]}; do
+        for x in ${(k)${(P)match_array}[@]}; do
           if (( ${${(P)match_array}[$x]} )); then
             _zshz_printv -f "%-10d %s\n" ${${(P)match_array}[$x]} $x
             output+=( ${(f)REPLY} )
@@ -462,21 +463,23 @@ zshz() {
           (( $#output > 1 )) && printf "%-10s %s\n" 'common:' $common
         fi
         # -lt
-        if (( $+opts[-t] )); then
-          for x in ${(@On)output}; do
+        if (( ${+opts[-t]} )); then
+          for x in ${(On)output[@]}; do
             print -- $x
           done
         # -lr
-        elif (( $+opts[-r] )); then
-          for x in ${(@on)output}; do
+        elif (( ${+opts[-r]} )); then
+          for x in ${(on)output[@]}; do
             print -- $x
           done
         # -l
         else
-          for x in ${(@on)output}; do
-            # Still using period as decimal separator for compatibility with fzf-z
-            LC_ALL=C _zshz_printv -f '%-10.2f' $(( ${x%%[[:blank:]]*} / 10000. ))
-            print -- "${REPLY/[[:punct:]]00/   }/${x#*/}"
+          for x in ${(on)output[@]}; do
+            # Still using period as decimal separator for compatibility with
+            # fzf-z
+            LC_ALL=C _zshz_printv -f '%-10.2f' \
+              $(( ${x%%[[:blank:]]*} / 10000. ))
+            print -- "${REPLY/[[:punct:]]00/   } /${x#*/}"
             REPLY=''
             # print $x  # for rupa/z-like behavior
           done
