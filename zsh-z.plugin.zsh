@@ -339,7 +339,7 @@ zshz() {
     # Replace spaces in the search string with asterisks for globbing
     1=${1//[[:space:]]/*}
 
-    for line in $lines; do
+    for line in ${lines[@]}; do
 
       path_field=${line%%\|*}
 
