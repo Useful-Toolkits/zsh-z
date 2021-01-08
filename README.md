@@ -37,6 +37,7 @@ ZSH-z is a drop-in replacement for `rupa/z` and will, by default, use the same d
   + Major refactoring of the code.
   + `z -lr` and `z -lt` work as expected.
   + `EXTENDED_GLOB` has been disabled within the plugin to allow matching old-fashioned Windows directories with names such as `Progra~1`.
+  + The code should be safe even when `KSH_ARRAYS` and `SH_WORD_SPLIT` are enabled.
 - January 6, 2021
   + I have corrected the frecency routine so that it matches `rupa/z`'s math, but for the present, ZSH-z will continue to display ranks as 1/10000th of what they are in `rupa/z` -- [they had to multiply theirs by 10000](https://github.com/rupa/z/commit/f1f113d9bae9effaef6b1e15853b5eeb445e0712) to work around `bash`'s inadequacies at dealing with decimal fractions.
 - January 5, 2021
