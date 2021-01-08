@@ -172,7 +172,8 @@ zshz() {
   #   $2 The path to add or remove
   ############################################################
   _zshz_add_or_remove_path() {
-    local action=${1}
+
+    local action=$1
     shift
 
     if [[ $action == '--add' ]]; then
@@ -181,11 +182,12 @@ zshz() {
 
       # Don't track directory trees excluded in ZSHZ_EXCLUDE_DIRS
       local exclude
-      for exclude in ${(@)ZSHZ_EXCLUDE_DIRS:-${(@)_Z_EXCLUDE_DIRS}}; do
+      for exclude in ${ZSHZ_EXCLUDE_DIRS[@]:-${_Z_EXCLUDE_DIRS[@]}}; do
         case $* in
           $exclude*) return ;;
         esac
       done
+
     fi
 
     # A temporary file that gets copied over the datafile if all goes well
@@ -209,13 +211,13 @@ zshz() {
       --remove)
         local -a lines_to_keep
         # All of the lines that don't match the directory to be deleted
-        lines_to_keep=( ${lines:#${PWD}\|*} )
-        if [[ $lines != "$lines_to_keep" ]]; then
-          lines=( $lines_to_keep )
+        lines_to_keep=( ${${lines[@]}:#${PWD}\|*} )
+        if [[ ${lines[@]} != "${lines_to_keep[@]}" ]]; then
+          lines=( ${lines_to_keep[@]} )
         else
           return 1  # The $PWD isn't in the datafile
         fi
-        print -l -- $lines > "$tempfile"
+        print -l -- ${lines[@]} > "$tempfile"
         local ret=$?
         ;;
     esac
@@ -274,7 +276,7 @@ zshz() {
     time[$add_path]=$now
 
     # Remove paths from database if they no longer exist
-    for line in $lines; do
+    for line in ${lines[@]}; do
       if [[ ! -d ${line%%\|*} ]]; then
         for dir in ${ZSHZ_KEEP_DIRS[@]}; do
           if [[ ${line%%\|*} == ${dir}/* ||
@@ -287,9 +289,9 @@ zshz() {
         existing_paths+=( $line )
       fi
     done
-    lines=( $existing_paths )
+    lines=( ${existing_paths[@]} )
 
-    for line in $lines; do
+    for line in ${lines[@]}; do
       path_field=${line%%\|*}
       rank_field=${${line%\|*}#*\|}
       time_field=${line##*\|}
@@ -308,11 +310,11 @@ zshz() {
     done
     if (( count > ${ZSHZ_MAX_SCORE:-${_Z_MAX_SCORE:-9000}} )); then
       # Aging
-      for x in ${(k)rank}; do
+      for x in ${(k)rank[@]}; do
         print -- "$x|$(( 0.99 * rank[$x] ))|${time[$x]}"
       done
     else
-      for x in ${(k)rank}; do
+      for x in ${(k)rank[@]}; do
         print -- "$x|${rank[$x]}|${time[$x]}"
       done
     fi
