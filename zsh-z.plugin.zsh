@@ -168,7 +168,7 @@ zshz() {
   #
   # Arguments:
   #   $1 Which action to perform (--add/--remove)
-  #   $2 The path to add or remove
+  #   $2 The path to add
   ############################################################
   _zshz_add_or_remove_path() {
 
@@ -643,7 +643,7 @@ zshz() {
       -r) method='rank' ;;
       -t) method='time' ;;
       -x)
-        _zshz_add_or_remove_path --remove "$*"
+        _zshz_add_or_remove_path --remove
         return
         ;;
     esac
