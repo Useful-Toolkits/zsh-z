@@ -395,12 +395,9 @@ zshz() {
   ############################################################
   _zshz_find_common_root() {
 
-    local -a common_matches
     local x short
 
-    common_matches=( ${(k)${(P)1}[@]} )
-
-    for x in ${common_matches[@]}; do
+    for x in "${(k)1[@]}"; do
       if [[ -z $short ]] || (( $#x < $#short )); then
         short=$x
       fi
