@@ -525,22 +525,22 @@ zshz() {
     local best_match ibest_match hi_rank=-9999999999 ihi_rank=-9999999999
 
     # Remove paths from database if they no longer exist
-    for line in ${lines[@]}; do
+    for line in "${lines[@]}"; do
       if [[ ! -d ${line%%\|*} ]]; then
-        for dir in ${ZSHZ_KEEP_DIRS[@]}; do
+        for dir in "${ZSHZ_KEEP_DIRS[@]}"; do
           if [[ ${line%%\|*} == ${dir}/* ||
                 ${line%%\|*} == $dir     ||
                 $dir = / ]]; then
-            existing_paths+=( $line )
+            existing_paths+=( "$line" )
           fi
         done
       else
-        existing_paths+=( $line )
+        existing_paths+=( "$line" )
       fi
     done
-    lines=( ${existing_paths[@]} )
+    lines=( "${existing_paths[@]}" )
 
-    for line in ${lines[@]}; do
+    for line in "${lines[@]}"; do
       path_field=${line%%\|*}
       rank_field=${${line%\|*}#*\|}
       time_field=${line##*\|}
