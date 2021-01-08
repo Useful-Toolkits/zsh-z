@@ -275,25 +275,25 @@ zshz() {
     time[$add_path]=$now
 
     # Remove paths from database if they no longer exist
-    for line in ${lines[@]}; do
+    for line in "${lines[@]}"; do
       if [[ ! -d ${line%%\|*} ]]; then
-        for dir in ${ZSHZ_KEEP_DIRS[@]}; do
-          if [[ ${line%%\|*} == ${dir}/* ||
-                ${line%%\|*} == $dir     ||
+        for dir in "${ZSHZ_KEEP_DIRS[@]}"; do
+          if [[ ${line%%\|*} == "${dir}/*" ||
+                ${line%%\|*} == "$dir"     ||
                 $dir == '/' ]]; then
-            existing_paths+=( $line )
+            existing_paths+=( "$line" )
           fi
         done
       else
-        existing_paths+=( $line )
+        existing_paths+=( "$line" )
       fi
     done
-    lines=( ${existing_paths[@]} )
+    lines=( "${existing_paths[@]}" )
 
-    for line in ${lines[@]}; do
-      path_field=${line%%\|*}
-      rank_field=${${line%\|*}#*\|}
-      time_field=${line##*\|}
+    for line in "${lines[@]}"; do
+      path_field="${line%%\|*}"
+      rank_field="${${line%\|*}#*\|}"
+      time_field="${line##*\|}"
 
       # When a rank drops below 1, drop the path from the database
       (( rank_field < 1 )) && continue
@@ -307,13 +307,14 @@ zshz() {
       fi
       (( count += rank_field ))
     done
+
     if (( count > ${ZSHZ_MAX_SCORE:-${_Z_MAX_SCORE:-9000}} )); then
       # Aging
-      for x in ${(k)rank[@]}; do
+      for x in "${(k)rank[@]}"; do
         print -- "$x|$(( 0.99 * rank[$x] ))|${time[$x]}"
       done
     else
-      for x in ${(k)rank[@]}; do
+      for x in "${(k)rank[@]}"; do
         print -- "$x|${rank[$x]}|${time[$x]}"
       done
     fi
