@@ -513,9 +513,10 @@ zshz() {
   #     in REPLY
   ############################################################
   _zshz_find_matches() {
+
     setopt LOCAL_OPTIONS NO_EXTENDED_GLOB
 
-    local fnd=$1 method=$2 format=$3
+    local fnd="$1" method=$2 format=$3
 
     local -a existing_paths
     local line dir path_field rank_field time_field rank dx
@@ -526,9 +527,9 @@ zshz() {
     for line in "${lines[@]}"; do
       if [[ ! -d ${line%%\|*} ]]; then
         for dir in "${ZSHZ_KEEP_DIRS[@]}"; do
-          if [[ ${line%%\|*} == ${dir}/* ||
-                ${line%%\|*} == $dir     ||
-                $dir = / ]]; then
+          if [[ ${line%%\|*} == "${dir}/*" ||
+                ${line%%\|*} == "$dir"     ||
+                $dir == '/' ]]; then
             existing_paths+=( "$line" )
           fi
         done
@@ -539,9 +540,9 @@ zshz() {
     lines=( "${existing_paths[@]}" )
 
     for line in "${lines[@]}"; do
-      path_field=${line%%\|*}
-      rank_field=${${line%\|*}#*\|}
-      time_field=${line##*\|}
+      path_field="${line%%\|*}"
+      rank_field="${${line%\|*}#*\|}"
+      time_field="${line##*\|}"
 
       case $method in
         rank) rank=$rank_field ;;
@@ -574,11 +575,11 @@ zshz() {
 
       if (( matches[$path_field] )) &&
          (( matches[$path_field] > hi_rank )); then
-        best_match=$path_field
+        best_match="$path_field"
         hi_rank=${matches[$path_field]}
       elif (( imatches[$path_field] )) &&
            (( imatches[$path_field] > ihi_rank )); then
-        ibest_match=$path_field
+        ibest_match="$path_field"
         ihi_rank=${imatches[$path_field]}
         ZSHZ[CASE_INSENSITIVE]=1
       fi
