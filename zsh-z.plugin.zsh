@@ -378,9 +378,9 @@ zshz() {
   ############################################################
   _zshz_printv() {
     if (( ZSHZ[PRINTV] )); then
-      builtin print -v REPLY $@
+      builtin print -v REPLY "$@"
     else
-      builtin print -z $@
+      builtin print -z "$@"
       builtin read -rz REPLY
     fi
   }
@@ -465,17 +465,17 @@ zshz() {
         fi
         # -lt
         if (( ${+opts[-t]} )); then
-          for x in ${(On)output[@]}; do
-            print -- $x
+          for x in "${(On)output[@]}"; do
+            print -- "$x"
           done
         # -lr
         elif (( ${+opts[-r]} )); then
-          for x in ${(on)output[@]}; do
-            print -- $x
+          for x in "${(on)output[@]}"; do
+            print -- "$x"
           done
         # -l
         else
-          for x in ${(on)output[@]}; do
+          for x in "${(on)output[@]}"; do
             # Still using period as decimal separator for compatibility with
             # fzf-z
             LC_ALL=C _zshz_printv -f '%-10.2f' \
