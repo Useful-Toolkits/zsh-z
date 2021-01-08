@@ -265,7 +265,7 @@ zshz() {
 
     # Characters special to the shell (such as '[]') are quoted with backslashes
     # See https://github.com/rupa/z/issues/246
-    local add_path=${(q)1}
+    local add_path="${(q)1}"
 
     local -a existing_paths
     local now=$EPOCHSECONDS line dir
