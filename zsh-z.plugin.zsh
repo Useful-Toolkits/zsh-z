@@ -133,7 +133,6 @@ is-at-least 5.3.0 && ZSHZ[PRINTV]=1
 ############################################################
 zshz() {
 
-  emulate -L zsh
   (( ZSHZ_DEBUG )) && setopt LOCAL_OPTIONS WARN_CREATE_GLOBAL
 
   local REPLY
@@ -526,7 +525,7 @@ zshz() {
     local best_match ibest_match hi_rank=-9999999999 ihi_rank=-9999999999
 
     # Remove paths from database if they no longer exist
-    for line in $lines; do
+    for line in ${lines[@]}; do
       if [[ ! -d ${line%%\|*} ]]; then
         for dir in ${ZSHZ_KEEP_DIRS[@]}; do
           if [[ ${line%%\|*} == ${dir}/* ||
@@ -539,9 +538,9 @@ zshz() {
         existing_paths+=( $line )
       fi
     done
-    lines=( $existing_paths )
+    lines=( ${existing_paths[@]} )
 
-    for line in $lines; do
+    for line in ${lines[@]}; do
       path_field=${line%%\|*}
       rank_field=${${line%\|*}#*\|}
       time_field=${line##*\|}
@@ -623,7 +622,7 @@ zshz() {
 
   local opt output_format method='frecency' fnd prefix req
 
-  for opt in ${(k)opts}; do
+  for opt in ${(k)opts[@]}; do
     case $opt in
       --add)
         _zshz_add_or_remove_path --add "$*"
@@ -653,11 +652,12 @@ zshz() {
   req="$*"
   fnd="$prefix$*"
 
+
   [[ -n $fnd && $fnd != "$PWD " ]] || {
     [[ $output_format != 'completion' ]] && output_format='list'
   }
 
-  if [[ ${@: -1} == /* ]] && (( ! $+opts[-e] && ! $+opts[-l] )); then
+  if [[ ${@: -1} == /* ]] && (( ! ${+opts[-e]} && ! ${+opts[-l]} )); then
     [[ -d ${@: -1} ]] && builtin cd ${@: -1} && return
   fi
 
@@ -675,6 +675,7 @@ zshz() {
 
   local cd
   cd=$REPLY
+
 
   # New experimental "uncommon" behavior
   #
@@ -709,14 +710,14 @@ zshz() {
   fi
 
   if (( ret2 == 0 )) && [[ -n $cd ]]; then
-    if (( $+opts[-e] )); then               # echo
+    if (( ${+opts[-e]} )); then               # echo
       print -- "$cd"
     else
       [[ -d $cd ]] && builtin cd "$cd"
     fi
   else
     # if $req is a valid path, cd to it
-    if ! (( $+opts[-e] || $+opts[-l] )) && [[ -d $req ]]; then
+    if ! (( ${+opts[-e]} || ${+opts[-l]} )) && [[ -d $req ]]; then
       builtin cd "$req"
     else
       return $ret2
@@ -818,7 +819,6 @@ ZSHZ[FUNCTIONS]='_zshz_usage
 #   ZSHZ_CMD
 ############################################################
 zsh-z_plugin_unload() {
-  emulate -L zsh
 
   add-zsh-hook -D precmd _zshz_precmd
   add-zsh-hook -d chpwd _zshz_chpwd
@@ -830,7 +830,7 @@ zsh-z_plugin_unload() {
 
   unset ZSHZ
 
-  fpath=("${(@)fpath:#${0:A:h}}")
+  fpath=("${fpath[@]:#${0:A:h}}")
 
   (( $+aliases[$ZSHZ_CMD:-${_Z_CMD:-z}] )) && unalias ${ZSHZ_CMD:-${_Z_CMD:-z}}
 
