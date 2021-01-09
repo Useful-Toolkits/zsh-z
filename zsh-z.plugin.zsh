@@ -135,7 +135,7 @@ zshz() {
 
   (( ZSHZ_DEBUG )) && setopt LOCAL_OPTIONS WARN_CREATE_GLOBAL
 
-  local REPLY
+  local lines REPLY
 
   # Allow the user to specify the datafile name in $ZSHZ_DATA (default: ~/.z)
   # If the datafile is a symlink, it gets dereferenced
