@@ -448,8 +448,14 @@ zshz() {
           descending_list+=( ${(f)"${REPLY}"} )
           REPLY=''
         done
-        descending_list=( ${${(On)descending_list[@]}#*\|} )
-        print -l "${descending_list[@]}"
+        descending_list=( "${(On)descending_list[@]}" )
+        # TODO: Clean this up
+        local item
+        local -a items
+        for item in "${descending_list[@]}"; do
+          items+=( "${item#*\|}" )
+        done
+        print -l "${items[@]}"
         ;;
 
       list)
