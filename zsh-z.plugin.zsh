@@ -446,7 +446,7 @@ zshz() {
           descending_list+=( ${(f)"${REPLY}"} )
           REPLY=''
         done
-        descending_list=( "${${(On)descending_list[@]}#*\|}" )
+        descending_list=( ${${(On)descending_list[@]}#*\|} )
         print -l "${descending_list[@]}"
         ;;
 
