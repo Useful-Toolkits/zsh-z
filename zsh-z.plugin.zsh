@@ -399,7 +399,7 @@ zshz() {
 
     local x short
 
-    for x in "${(k)1[@]}"; do
+    for x in "${(Pk)1[@]}"; do
       if [[ -z $short ]] || (( $#x < $#short )); then
         short=$x
       fi
